@@ -35,6 +35,8 @@
         ],
         "react/no-unescaped-entities": [
             "off"
-        ]
+        ],
+        "@typescript-eslint/no-floating-promises": "warn",
+        "@typescript-eslint/strict-boolean-expression": "off"
     }
 }
