@@ -37,6 +37,6 @@
             "off"
         ],
         "@typescript-eslint/no-floating-promises": "warn",
-        "@typescript-eslint/strict-boolean-expression": "off"
+        "@typescript-eslint/strict-boolean-expressions": "off"
     }
 }
