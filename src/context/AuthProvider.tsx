@@ -1,14 +1,17 @@
 import React, { createContext, useState } from 'react';
 
-type AuthContextType = {
+export interface AuthContextType {
   token: string | null;
   setToken: (newToken: string) => void;
-} | null;
+}
 
 interface Props {
   children: React.ReactNode;
 }
-const AuthContext = createContext<AuthContextType>(null);
+export const AuthContext = createContext<AuthContextType>({
+  token: null,
+  setToken: (newToken: string) => {},
+});
 
 export const AuthProvider = ({ children }: Props) => {
   const [token, setToken] = useState<string | null>(null);
