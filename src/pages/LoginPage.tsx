@@ -2,10 +2,11 @@ import React, { useRef } from 'react';
 import { basicRoute } from '../utils/fetch';
 import { InvalidLoginRes, LoginReq, LoginRes } from '../types';
 import { AxiosError } from 'axios';
+import { useToken } from '../hooks/useToken';
 export const LoginPage = () => {
   const loginRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-
+  const [token, setToken] = useToken();
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const data = {
@@ -18,7 +19,7 @@ export const LoginPage = () => {
       const results = await basicRoute.post('/auth/login', data);
       if (results.status === 200) {
         const { accessToken } = results.data as LoginRes;
-        console.log({ accessToken });
+        setToken(accessToken);
       }
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
@@ -30,6 +31,7 @@ export const LoginPage = () => {
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form className='Form' onSubmit={onSubmit}>
+      <p>{token}</p>
       <label htmlFor='email' className='Form__label'>
         Email
         <input type='text' className='Form__input' id='email' ref={loginRef} />

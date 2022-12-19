@@ -2,7 +2,7 @@ import React, { createContext, useState } from 'react';
 
 export interface AuthContextType {
   token: string | null;
-  setToken: (newToken: string) => void;
+  setToken: (newToken: string | null) => void;
 }
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 export const AuthContext = createContext<AuthContextType>({
   token: null,
-  setToken: (newToken: string) => {},
+  setToken: (newToken: string | null) => {},
 });
 
 export const AuthProvider = ({ children }: Props) => {
