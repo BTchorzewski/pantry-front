@@ -31,7 +31,6 @@ export const LoginPage = () => {
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <form className='Form' onSubmit={onSubmit}>
-      <p>{token}</p>
       <label htmlFor='email' className='Form__label'>
         Email
         <input type='text' className='Form__input' id='email' ref={loginRef} />
