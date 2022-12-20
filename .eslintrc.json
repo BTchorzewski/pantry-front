@@ -39,6 +39,7 @@
         "@typescript-eslint/no-floating-promises": "warn",
         "@typescript-eslint/strict-boolean-expressions": "off",
         "@typescript-eslint/consistent-type-assertions": ["warn"],
-        "@typescript-eslint/no-unused-vars": "warn"
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/restrict-template-expressions": "warn"
     }
 }
