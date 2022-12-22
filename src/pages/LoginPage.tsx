@@ -3,10 +3,12 @@ import { basicRoute } from '../utils/fetch';
 import { InvalidLoginRes, LoginReq, LoginRes } from '../types';
 import { AxiosError } from 'axios';
 import { useToken } from '../hooks/useToken';
+import { useNavigate } from 'react-router-dom';
 export const LoginPage = () => {
   const loginRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const [token, setToken] = useToken();
+  const navigate = useNavigate();
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const data = {
@@ -14,12 +16,12 @@ export const LoginPage = () => {
       password: passwordRef?.current?.value,
     } as LoginReq;
 
-    console.log(data);
     try {
       const results = await basicRoute.post('/auth/login', data);
       if (results.status === 200) {
         const { accessToken } = results.data as LoginRes;
         setToken(accessToken);
+        navigate('/pantries');
       }
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
