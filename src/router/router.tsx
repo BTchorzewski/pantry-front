@@ -4,6 +4,7 @@ import { LoginPage } from '../pages/LoginPage';
 import ErrorPage from '../pages/ErrorPage';
 import { HomePage } from '../pages/HomePage';
 import { PantriesPage } from '../pages/PantriesPage';
+import { LogoutPage } from '../pages/LogoutPage';
 
 export const router = createBrowserRouter([
   {
@@ -12,16 +13,20 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
+        path: '/',
+        element: <HomePage />,
+      },
+      {
         path: '/login',
         element: <LoginPage />,
       },
       {
-        path: '/pantries',
-        element: <PantriesPage />,
+        path: '/logout',
+        element: <LogoutPage />,
       },
       {
-        path: '/',
-        element: <HomePage />,
+        path: '/pantries',
+        element: <PantriesPage />,
       },
     ],
   },
