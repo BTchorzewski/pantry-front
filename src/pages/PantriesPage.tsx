@@ -2,6 +2,7 @@ import { useToken } from '../hooks/useToken';
 import { useEffect, useState } from 'react';
 import { FetchShortPantriesResponse, ShortPantry } from '../types';
 import { protectedBasicRoute } from '../utils/fetch';
+import { BriefPantry } from '../components/Pantry/BriefPantry';
 
 export const PantriesPage = () => {
   const [token] = useToken();
@@ -23,18 +24,16 @@ export const PantriesPage = () => {
 
   return (
     <div>
-      {!error ? null : <p>{error}</p>}
-      <h2>Pantries: {token}</h2>
+      <h2>Pantries: </h2>
       <ul>
         {pantries.map((pantry) => {
           return (
             <li key={pantry.id}>
-              <div>{pantry.name}</div>
-              <div>
-                <p>total: {pantry.stats.total}</p>
-                <p></p>
-                <p></p>
-              </div>
+              <BriefPantry
+                id={pantry.id}
+                name={pantry.name}
+                stats={pantry.stats}
+              />
             </li>
           );
         })}

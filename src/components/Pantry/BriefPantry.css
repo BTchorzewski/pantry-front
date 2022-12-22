@@ -1,0 +1,17 @@
+.brief-pantry {
+  min-width: 250px;
+  max-width: 300px;
+  padding: 10px;
+  background-color: #61dafb;
+ }
+
+.brief-pantry__title {
+  text-transform: uppercase;
+}
+.brief-pantry__stats {
+  display: flex;
+}
+.brief-pantry__stats-element {
+  width: 30px;
+  height: 30px;
+}
