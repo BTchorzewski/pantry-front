@@ -1,0 +1,10 @@
+.CreatePantry {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  height: 250px;
+  padding: 25px;
+  background-color: green;
+}

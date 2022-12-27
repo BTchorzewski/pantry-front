@@ -4,6 +4,7 @@ import { FetchShortPantriesResponse, ShortPantry } from '../types';
 import { protectedBasicRoute } from '../utils/fetch';
 import { BriefPantry } from '../components/Pantry/BriefPantry';
 import { AxiosError } from 'axios';
+import { CreatePantry } from '../components/CreatePantry/CreatePantry';
 
 export const PantriesPage = () => {
   const [pantries, setPantries] = useState<ShortPantry[]>([]);
@@ -48,6 +49,7 @@ export const PantriesPage = () => {
           );
         })}
       </ul>
+      <CreatePantry />
     </div>
   );
 };
