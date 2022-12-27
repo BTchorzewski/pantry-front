@@ -1,9 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { basicRoute } from '../utils/fetch';
 import { InvalidLoginRes, LoginReq, LoginRes } from '../types';
 import { AxiosError } from 'axios';
 import { useToken } from '../hooks/useToken';
 import { useNavigate } from 'react-router-dom';
+
 export const LoginPage = () => {
   const loginRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -19,9 +20,8 @@ export const LoginPage = () => {
     try {
       const results = await basicRoute.post('/auth/login', data);
       if (results.status === 200) {
-        const { accessToken } = results.data as LoginRes;
+        const { accessToken } = (await results.data) as LoginRes;
         setToken(accessToken);
-        navigate('/pantries');
       }
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
@@ -29,6 +29,10 @@ export const LoginPage = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (token !== null) navigate('/pantries');
+  }, [token]);
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -49,6 +53,7 @@ export const LoginPage = () => {
       <button className='button' type={'submit'}>
         Login
       </button>
+      token: {token}
     </form>
   );
 };
