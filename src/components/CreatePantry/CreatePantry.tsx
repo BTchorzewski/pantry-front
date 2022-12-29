@@ -3,10 +3,18 @@ import { useToken } from '../../hooks/useToken';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { protectedBasicRoute } from '../../utils/fetch';
 import { AxiosError } from 'axios';
-export const CreatePantry = () => {
-  const [token] = useToken();
+import { CreatePantryResponse, ShortPantry } from '../../types';
+import { useNavigate } from 'react-router-dom';
+type SetPantries = (pantries: ShortPantry[]) => ShortPantry[];
+interface Props {
+  addPantry: (fn: SetPantries) => void;
+}
+
+export const CreatePantry = ({ addPantry }: Props) => {
+  const [token, setToken] = useToken();
   const [name, setName] = useState('');
   const [result, setResult] = useState(false);
+  const navigation = useNavigate();
   const createPantry = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
     try {
@@ -23,16 +31,36 @@ export const CreatePantry = () => {
       );
 
       console.log(await results.data);
+      const { pantryId: id } = results.data as CreatePantryResponse;
+      if (id !== undefined) {
+        addPantry((pantries) => [
+          ...pantries,
+          {
+            stats: {
+              total: 0,
+              fresh: 0,
+              expiredSoon: 0,
+              expired: 0,
+            },
+            name,
+            id,
+          },
+        ]);
+      }
       setName('');
     } catch (e: unknown) {
       if (e instanceof AxiosError) {
-        console.log(e.response?.data);
+        if (e.response?.status === 401) {
+          setToken(null);
+          navigation('/login', { replace: true });
+        }
       }
     }
   };
   const handleInput = (e: ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value);
   };
+
   return (
     <div className='CreatePantry'>
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}

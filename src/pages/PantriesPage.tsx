@@ -5,14 +5,14 @@ import { protectedBasicRoute } from '../utils/fetch';
 import { BriefPantry } from '../components/Pantry/BriefPantry';
 import { AxiosError } from 'axios';
 import { CreatePantry } from '../components/CreatePantry/CreatePantry';
-
+import { useNavigate, redirect } from 'react-router-dom';
 export const PantriesPage = () => {
   const [pantries, setPantries] = useState<ShortPantry[]>([]);
-  const [token] = useToken();
+  const [token, setToken] = useToken();
   const [error, setError] = useState<null | string>(null);
+  const navigation = useNavigate();
   console.log('pantries page');
   useEffect(() => {
-    console.log({ token });
     (async () => {
       try {
         const config = {
@@ -26,15 +26,47 @@ export const PantriesPage = () => {
         setPantries(shortPantries.data);
       } catch (e: unknown) {
         if (e instanceof AxiosError) {
-          setError(e.message);
+          if (e instanceof AxiosError) {
+            if (e.response?.status === 401) {
+              setToken(null);
+              // redirect('/login');
+              navigation('/login', { replace: true });
+            }
+          }
         }
       }
     })();
   }, []);
 
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       console.log('fetching');
+  //       const config = {
+  //         headers: {
+  //           // prettier-ignore
+  //           'Authorization': `Bearer ${token}`,
+  //         },
+  //       };
+  //       const { data } = await protectedBasicRoute.get('/pantry', config);
+  //       const shortPantries = (await data) as FetchShortPantriesResponse;
+  //       setPantries(shortPantries.data);
+  //     } catch (e: unknown) {
+  //       if (e instanceof AxiosError) {
+  //         setError(e.message);
+  //         if (e.status === 401) {
+  //           setToken(null);
+  //           navigation('/login');
+  //         }
+  //       }
+  //     }
+  //   })();
+  // }, [pantries]);
+
+  if (token === null) return null;
+
   return (
     <div>
-      <div>{error !== null ? <p>{error}</p> : null}</div>
       <h2>Pantries: </h2>
       <ul>
         {pantries.map((pantry) => {
@@ -49,7 +81,7 @@ export const PantriesPage = () => {
           );
         })}
       </ul>
-      <CreatePantry />
+      <CreatePantry addPantry={setPantries} />
     </div>
   );
 };
