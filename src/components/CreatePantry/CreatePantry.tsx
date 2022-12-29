@@ -30,7 +30,6 @@ export const CreatePantry = ({ addPantry }: Props) => {
         config
       );
 
-      console.log(await results.data);
       const { pantryId: id } = results.data as CreatePantryResponse;
       if (id !== undefined) {
         addPantry((pantries) => [

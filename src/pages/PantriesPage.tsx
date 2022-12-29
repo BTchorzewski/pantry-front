@@ -1,7 +1,7 @@
 import { useToken } from '../hooks/useToken';
 import { useEffect, useState } from 'react';
 import { FetchShortPantriesResponse, ShortPantry } from '../types';
-import { protectedBasicRoute } from '../utils/fetch';
+import { protectedBasicRoute, refreshToken } from '../utils/fetch';
 import { BriefPantry } from '../components/Pantry/BriefPantry';
 import { AxiosError } from 'axios';
 import { CreatePantry } from '../components/CreatePantry/CreatePantry';
@@ -11,7 +11,7 @@ export const PantriesPage = () => {
   const [token, setToken] = useToken();
   const [error, setError] = useState<null | string>(null);
   const navigation = useNavigate();
-  console.log('pantries page');
+
   useEffect(() => {
     (async () => {
       try {
@@ -21,15 +21,17 @@ export const PantriesPage = () => {
             'Authorization': `Bearer ${token}`,
           },
         };
-        const { data } = await protectedBasicRoute.get('/pantry', config);
-        const shortPantries = (await data) as FetchShortPantriesResponse;
+        const results = await protectedBasicRoute.get('/pantry', config);
+
+        const shortPantries = results.data as FetchShortPantriesResponse;
         setPantries(shortPantries.data);
       } catch (e: unknown) {
         if (e instanceof AxiosError) {
           if (e instanceof AxiosError) {
             if (e.response?.status === 401) {
+              const token = await refreshToken();
+              console.log({ token });
               setToken(null);
-              // redirect('/login');
               navigation('/login', { replace: true });
             }
           }

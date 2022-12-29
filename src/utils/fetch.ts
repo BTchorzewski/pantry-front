@@ -16,22 +16,37 @@ export const protectedBasicRoute = axios.create({
   },
 });
 
-// export const routeWithInterceptor = protectedRoute.interceptors.response.use(
+// protectedBasicRoute.interceptors.request.use((req) => {
+//   console.log('request');
+//   return req;
+// });
+//
+// protectedBasicRoute.interceptors.response.use(
 //   (res) => {
 //     console.log('fetch api');
 //     return res;
 //   },
-//   async (error: unknown): Promise<AxiosError> => {
-//     if (error instanceof AxiosError) {
-//       console.log({ 'interceptor status': error.status });
+//   async (error: AxiosError): Promise<AxiosError> => {
+//     if (error.response?.status === 401) {
+//       const refreshedToken = await refreshToken();
+//       console.log('refreshing token', refreshedToken);
 //     }
 //     return await Promise.reject(error);
 //   }
-// ) as unknown as AxiosInstance;
+// );
+//
+// export default protectedBasicRoute;
 
 export const refreshToken = async (): Promise<string | null> => {
-  const results = await basicRoute.get('/auth/refresh-token');
-  if (results.status !== 200) return null;
-  const { accessToken }: TokensRes = await results.data;
-  return accessToken;
+  try {
+    const results = await protectedBasicRoute.get('/auth/refresh-token');
+    if (results.status !== 200) return null;
+    const { accessToken }: TokensRes = await results.data;
+    return accessToken;
+  } catch (e: unknown) {
+    if (e instanceof AxiosError) {
+      console.log(e.response?.statusText);
+    }
+    return null;
+  }
 };
