@@ -1,10 +1,17 @@
 import { Link } from 'react-router-dom';
 import { useToken } from '../../hooks/useToken';
+import { protectedBasicRoute } from '../../utils/fetch';
 
 export function Navigation() {
   const [token, setToken] = useToken();
-  const logout = () => {
-    setToken(null);
+  const logout = async () => {
+    try {
+      await protectedBasicRoute.get('/auth/logout');
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setToken(null);
+    }
   };
   return (
     <nav className='Navigation'>
