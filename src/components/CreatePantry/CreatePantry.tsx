@@ -1,7 +1,7 @@
 import './CreatePantry.css';
 import { useToken } from '../../hooks/useToken';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { protectedBasicRoute } from '../../utils/fetch';
+import { basicRoute, protectedBasicRoute } from '../../utils/fetch';
 import { AxiosError } from 'axios';
 import { CreatePantryResponse, ShortPantry } from '../../types';
 import { useNavigate } from 'react-router-dom';
@@ -24,11 +24,7 @@ export const CreatePantry = ({ addPantry }: Props) => {
           'Authorization': `Bearer ${token}`,
         },
       };
-      const results = await protectedBasicRoute.post(
-        '/pantry',
-        { name },
-        config
-      );
+      const results = await basicRoute.post('/pantry', { name }, config);
 
       const { pantryId: id } = results.data as CreatePantryResponse;
       if (id !== undefined) {
@@ -50,8 +46,9 @@ export const CreatePantry = ({ addPantry }: Props) => {
     } catch (e: unknown) {
       if (e instanceof AxiosError) {
         if (e.response?.status === 401) {
-          setToken(null);
-          navigation('/login', { replace: true });
+          // setToken(null);
+          console.log('expired token');
+          // navigation('/login', { replace: true });
         }
       }
     }

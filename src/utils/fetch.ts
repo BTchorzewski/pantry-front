@@ -10,7 +10,10 @@ export const basicRoute = axios.create({
 
 export const protectedBasicRoute = axios.create({
   baseURL: 'http://localhost:3001',
-  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Credentials': 'include',
+  },
 });
 
 // protectedBasicRoute.interceptors.request.use((req) => {
@@ -34,16 +37,16 @@ export const protectedBasicRoute = axios.create({
 //
 // export default protectedBasicRoute;
 
-export const refreshToken = async (): Promise<string | null> => {
-  try {
-    const results = await protectedBasicRoute.get('/auth/refresh-token');
-    if (results.status !== 200) return null;
-    const { accessToken }: TokensRes = await results.data;
-    return accessToken;
-  } catch (e: unknown) {
-    if (e instanceof AxiosError) {
-      console.log(e.response?.statusText);
-    }
-    return null;
-  }
-};
+// export const refreshToken = async (): Promise<string | null> => {
+//   try {
+//     const results = await protectedBasicRoute.get('/auth/refresh-token');
+//     if (results.status !== 200) return null;
+//     const { accessToken }: TokensRes = await results.data;
+//     return accessToken;
+//   } catch (e: unknown) {
+//     if (e instanceof AxiosError) {
+//       console.log(e.response?.statusText);
+//     }
+//     return null;
+//   }
+// };

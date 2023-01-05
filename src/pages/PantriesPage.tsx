@@ -1,7 +1,7 @@
 import { useToken } from '../hooks/useToken';
 import { useEffect, useState } from 'react';
 import { FetchShortPantriesResponse, ShortPantry } from '../types';
-import { basicRoute, protectedBasicRoute, refreshToken } from '../utils/fetch';
+import { basicRoute, protectedBasicRoute } from '../utils/fetch';
 import { BriefPantry } from '../components/Pantry/BriefPantry';
 import { AxiosError } from 'axios';
 import { CreatePantry } from '../components/CreatePantry/CreatePantry';

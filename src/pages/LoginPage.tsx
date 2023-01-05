@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { basicRoute } from '../utils/fetch';
+import { basicRoute, protectedBasicRoute } from '../utils/fetch';
 import { InvalidLoginRes, LoginReq, LoginRes } from '../types';
 import { AxiosError } from 'axios';
 import { useToken } from '../hooks/useToken';
@@ -18,7 +18,7 @@ export const LoginPage = () => {
     } as LoginReq;
 
     try {
-      const results = await basicRoute.post('/auth/login', data);
+      const results = await protectedBasicRoute.post('/auth/login', data);
       if (results.status === 200) {
         const { accessToken } = (await results.data) as LoginRes;
         setToken(accessToken);

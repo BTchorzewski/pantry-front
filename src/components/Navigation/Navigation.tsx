@@ -8,8 +8,10 @@ export function Navigation() {
     try {
       await protectedBasicRoute.get('/auth/logout');
     } catch (e) {
+      console.log('errorek');
       console.error(e);
     } finally {
+      console.log('token usuniety');
       setToken(null);
     }
   };
