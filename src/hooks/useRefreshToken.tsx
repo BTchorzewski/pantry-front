@@ -18,6 +18,7 @@ export const UseRefreshToken = (): UseRefreshTokenReturn => {
       setToken(accessToken);
     } catch (e) {
       console.log({ refreshError: e });
+      setToken(null);
     }
   };
 
