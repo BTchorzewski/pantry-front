@@ -9,15 +9,10 @@ export const UseRefreshToken = (): UseRefreshTokenReturn => {
   const [token, setToken] = useToken();
   const refreshToken = async () => {
     try {
-      const { data } = await basicRoute.get('/auth/refresh-token');
+      const { data } = await protectedBasicRoute.get('/auth/refresh-token');
       const { accessToken } = data as TokensRes;
-      console.log({
-        token,
-        accessToken,
-      });
       setToken(accessToken);
     } catch (e) {
-      console.log({ refreshError: e });
       setToken(null);
     }
   };
