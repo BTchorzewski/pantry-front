@@ -1,9 +1,11 @@
 .brief-pantry {
-  min-width: 250px;
-  max-width: 300px;
-  padding: 10px;
+  width: 250px;
+  height: 250px;
+  padding: 25px;
   background-color: #61dafb;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
  }
 
 .brief-pantry__title {
@@ -11,8 +13,10 @@
 }
 .brief-pantry__stats {
   display: flex;
+  flex-direction: column;
 }
 .brief-pantry__stats-element {
-  width: 30px;
-  height: 30px;
+ text-align: left;
+  margin: 0;
+
 }
