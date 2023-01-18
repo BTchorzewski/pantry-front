@@ -7,6 +7,8 @@ import { AxiosError } from 'axios';
 import { CreatePantry } from '../components/CreatePantry/CreatePantry';
 import { useNavigate, redirect } from 'react-router-dom';
 import { useRefreshToken } from '../hooks/useRefreshToken';
+import './PantriesPage.css';
+
 export const PantriesPage = () => {
   const [pantries, setPantries] = useState<ShortPantry[]>([]);
   const [token, setToken] = useToken();
@@ -40,13 +42,13 @@ export const PantriesPage = () => {
   if (token === null) return null;
 
   return (
-    <div>
-      <h2>Pantries: </h2>
-      <ul>
+    <div className='Pantries'>
+      <h2 className='Pantries__title'>Pantries: </h2>
+      <ul className='Pantries__list'>
         {pantries?.length ? (
           pantries.map((pantry) => {
             return (
-              <li key={pantry.id}>
+              <li className='Pantries__item' key={pantry.id}>
                 <BriefPantry
                   id={pantry.id}
                   name={pantry.name}
@@ -56,10 +58,12 @@ export const PantriesPage = () => {
             );
           })
         ) : (
-          <p>No pantries to display.</p>
+          <p className='Pantries__notification'>No pantries to display.</p>
         )}
+        <li className='Pantries__item'>
+          <CreatePantry addPantry={setPantries} />
+        </li>
       </ul>
-      <CreatePantry addPantry={setPantries} />
     </div>
   );
 };

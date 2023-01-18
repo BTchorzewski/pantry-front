@@ -1,0 +1,11 @@
+.Pantries {}
+.Pantries__title {}
+.Pantries__list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+}
+.Pantries__item:not(:last-child) {
+  margin: 0 5px 5px 0;
+}
+.Pantries__notification {}
