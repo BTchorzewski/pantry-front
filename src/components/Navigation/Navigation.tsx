@@ -8,10 +8,8 @@ export function Navigation() {
     try {
       await protectedBasicRoute.get('/auth/logout');
     } catch (e) {
-      console.log('errorek');
       console.error(e);
     } finally {
-      console.log('token usuniety');
       setToken(null);
     }
   };
@@ -41,6 +39,13 @@ export function Navigation() {
           <li className='Navigation__item'>
             <Link className='Navigation__link' to={'logout'} onClick={logout}>
               Logout
+            </Link>
+          </li>
+        )}
+        {token ? null : (
+          <li className='Navigation__item'>
+            <Link className='Navigation__link' to={'registration'}>
+              Registration
             </Link>
           </li>
         )}

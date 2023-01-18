@@ -6,13 +6,13 @@ import { BriefPantry } from '../components/Pantry/BriefPantry';
 import { AxiosError } from 'axios';
 import { CreatePantry } from '../components/CreatePantry/CreatePantry';
 import { useNavigate, redirect } from 'react-router-dom';
-import { UseRefreshToken } from '../hooks/useRefreshToken';
+import { useRefreshToken } from '../hooks/useRefreshToken';
 export const PantriesPage = () => {
   const [pantries, setPantries] = useState<ShortPantry[]>([]);
   const [token, setToken] = useToken();
   const [error, setError] = useState<null | string>(null);
   const navigation = useNavigate();
-  const refreshToken = UseRefreshToken();
+  const refreshToken = useRefreshToken();
   useEffect(() => {
     (async () => {
       try {
