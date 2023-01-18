@@ -29,9 +29,7 @@ export const PantriesPage = () => {
       } catch (e: unknown) {
         if (e instanceof AxiosError) {
           if (e.response?.status === 401) {
-            // const token = await refreshToken();
-            // console.log({ token });
-            setToken(null);
+            await refreshToken();
             navigation('/login', { replace: true });
           }
         }
@@ -39,36 +37,10 @@ export const PantriesPage = () => {
     })();
   }, []);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       console.log('fetching');
-  //       const config = {
-  //         headers: {
-  //           // prettier-ignore
-  //           'Authorization': `Bearer ${token}`,
-  //         },
-  //       };
-  //       const { data } = await protectedBasicRoute.get('/pantry', config);
-  //       const shortPantries = (await data) as FetchShortPantriesResponse;
-  //       setPantries(shortPantries.data);
-  //     } catch (e: unknown) {
-  //       if (e instanceof AxiosError) {
-  //         setError(e.message);
-  //         if (e.status === 401) {
-  //           setToken(null);
-  //           navigation('/login');
-  //         }
-  //       }
-  //     }
-  //   })();
-  // }, [pantries]);
-
   if (token === null) return null;
 
   return (
     <div>
-      <button onClick={(event) => refreshToken()}>refresh</button>
       <h2>Pantries: </h2>
       <ul>
         {pantries?.length ? (
