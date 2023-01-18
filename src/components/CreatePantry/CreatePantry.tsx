@@ -5,6 +5,7 @@ import { basicRoute, protectedBasicRoute } from '../../utils/fetch';
 import { AxiosError } from 'axios';
 import { CreatePantryResponse, ShortPantry } from '../../types';
 import { useNavigate } from 'react-router-dom';
+import { useRefreshToken } from '../../hooks/useRefreshToken';
 type SetPantries = (pantries: ShortPantry[]) => ShortPantry[];
 interface Props {
   addPantry: (fn: SetPantries) => void;
@@ -15,6 +16,7 @@ export const CreatePantry = ({ addPantry }: Props) => {
   const [name, setName] = useState('');
   const [result, setResult] = useState(false);
   const navigation = useNavigate();
+  const refreshToken = useRefreshToken();
   const createPantry = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
     try {
@@ -46,9 +48,8 @@ export const CreatePantry = ({ addPantry }: Props) => {
     } catch (e: unknown) {
       if (e instanceof AxiosError) {
         if (e.response?.status === 401) {
-          // setToken(null);
-          console.log('expired token');
-          // navigation('/login', { replace: true });
+          await refreshToken();
+          //  @todo create hooks for pantries management.
         }
       }
     }
