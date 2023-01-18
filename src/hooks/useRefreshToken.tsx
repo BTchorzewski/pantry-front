@@ -5,7 +5,7 @@ import { AxiosResponse } from 'axios';
 
 type UseRefreshTokenReturn = () => void;
 
-export const UseRefreshToken = (): UseRefreshTokenReturn => {
+export const useRefreshToken = (): UseRefreshTokenReturn => {
   const [token, setToken] = useToken();
   const refreshToken = async () => {
     try {
