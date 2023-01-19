@@ -3,6 +3,7 @@ import './BriefPantry.css';
 import { DeletePantry } from '../DeletePantry/DeletePantry';
 import { UpdatePantry } from '../UpdatePantry/UpdatePantry';
 import { ProductsList } from '../ProductsList/ProductsList';
+import { AddProduct } from '../AddProduct/AddProduct';
 export const BriefPantry = ({ id, name, stats }: ShortPantry) => {
   return (
     <div className='brief-pantry'>
@@ -17,7 +18,7 @@ export const BriefPantry = ({ id, name, stats }: ShortPantry) => {
       </div>
       <div className='Brief-pantry__actions'>
         <ProductsList pantryId={id} />
-        <button>Add item</button>
+        <AddProduct pantryId={id} />
         <UpdatePantry pantryId={id}></UpdatePantry>
         <DeletePantry pantryId={id} />
       </div>
