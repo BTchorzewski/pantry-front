@@ -1,11 +1,11 @@
 import { useToken } from './useToken';
+import { AxiosRequestConfig } from 'axios';
 
-export const useBearerToken = (): { headers: { Authorization: string } } => {
+export const useBearerToken = (): AxiosRequestConfig => {
   const [token] = useToken();
   return {
     headers: {
-      // prettier-ignore
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   };
 };
