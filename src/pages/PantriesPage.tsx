@@ -8,9 +8,10 @@ import { CreatePantry } from '../components/CreatePantry/CreatePantry';
 import { useNavigate, redirect } from 'react-router-dom';
 import { useRefreshToken } from '../hooks/useRefreshToken';
 import './PantriesPage.css';
+import { usePantries } from '../hooks/usePantries';
 
 export const PantriesPage = () => {
-  const [pantries, setPantries] = useState<ShortPantry[]>([]);
+  const { pantries, addPantries } = usePantries();
   const [token, setToken] = useToken();
   const [error, setError] = useState<null | string>(null);
   const navigation = useNavigate();
@@ -27,7 +28,7 @@ export const PantriesPage = () => {
         const results = await basicRoute.get('/pantry', config);
 
         const shortPantries = results.data as FetchShortPantriesResponse;
-        setPantries(shortPantries.data);
+        addPantries(shortPantries.data);
       } catch (e: unknown) {
         if (e instanceof AxiosError) {
           if (e.response?.status === 401) {
@@ -61,7 +62,7 @@ export const PantriesPage = () => {
           <p className='Pantries__notification'>No pantries to display.</p>
         )}
         <li className='Pantries__item'>
-          <CreatePantry addPantry={setPantries} />
+          <CreatePantry />
         </li>
       </ul>
     </div>

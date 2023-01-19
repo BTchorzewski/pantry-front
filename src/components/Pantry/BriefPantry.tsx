@@ -1,5 +1,6 @@
 import { ShortPantry } from '../../types';
 import './BriefPantry.css';
+import { DeletePantry } from '../DeletePantry/DeletePantry';
 export const BriefPantry = ({ id, name, stats }: ShortPantry) => {
   return (
     <div className='brief-pantry'>
@@ -11,6 +12,9 @@ export const BriefPantry = ({ id, name, stats }: ShortPantry) => {
           soon expired: {stats.expiredSoon}
         </p>
         <p className='brief-pantry__stats-element'>expired: {stats.expired}</p>
+      </div>
+      <div className='Brief-pantry__actions'>
+        <DeletePantry pantryId={id} />
       </div>
     </div>
   );

@@ -6,12 +6,11 @@ import { AxiosError } from 'axios';
 import { CreatePantryResponse, ShortPantry } from '../../types';
 import { useNavigate } from 'react-router-dom';
 import { useRefreshToken } from '../../hooks/useRefreshToken';
+import { usePantries } from '../../hooks/usePantries';
 type SetPantries = (pantries: ShortPantry[]) => ShortPantry[];
-interface Props {
-  addPantry: (fn: SetPantries) => void;
-}
 
-export const CreatePantry = ({ addPantry }: Props) => {
+export const CreatePantry = () => {
+  const { addPantry } = usePantries();
   const [token, setToken] = useToken();
   const [name, setName] = useState('');
   const [result, setResult] = useState(false);
@@ -30,19 +29,16 @@ export const CreatePantry = ({ addPantry }: Props) => {
 
       const { pantryId: id } = results.data as CreatePantryResponse;
       if (id !== undefined) {
-        addPantry((pantries) => [
-          ...pantries,
-          {
-            stats: {
-              total: 0,
-              fresh: 0,
-              expiredSoon: 0,
-              expired: 0,
-            },
-            name,
-            id,
+        addPantry({
+          name,
+          id,
+          stats: {
+            total: 0,
+            fresh: 0,
+            expiredSoon: 0,
+            expired: 0,
           },
-        ]);
+        });
       }
       setName('');
     } catch (e: unknown) {
