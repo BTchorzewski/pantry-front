@@ -14,6 +14,9 @@ export const BriefPantry = ({ id, name, stats }: ShortPantry) => {
         <p className='brief-pantry__stats-element'>expired: {stats.expired}</p>
       </div>
       <div className='Brief-pantry__actions'>
+        <button>Show list</button>
+        <button>Add item</button>
+        <button>Change</button>
         <DeletePantry pantryId={id} />
       </div>
     </div>
