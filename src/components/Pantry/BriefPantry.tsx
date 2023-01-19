@@ -2,6 +2,7 @@ import { ShortPantry } from '../../types';
 import './BriefPantry.css';
 import { DeletePantry } from '../DeletePantry/DeletePantry';
 import { UpdatePantry } from '../UpdatePantry/UpdatePantry';
+import { ProductsList } from '../ProductsList/ProductsList';
 export const BriefPantry = ({ id, name, stats }: ShortPantry) => {
   return (
     <div className='brief-pantry'>
@@ -15,7 +16,7 @@ export const BriefPantry = ({ id, name, stats }: ShortPantry) => {
         <p className='brief-pantry__stats-element'>expired: {stats.expired}</p>
       </div>
       <div className='Brief-pantry__actions'>
-        <button>Show list</button>
+        <ProductsList pantryId={id} />
         <button>Add item</button>
         <UpdatePantry pantryId={id}></UpdatePantry>
         <DeletePantry pantryId={id} />

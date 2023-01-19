@@ -1,0 +1,13 @@
+.ProductsList {
+  position: absolute;
+  top: 20%;
+  left:40%;
+  background-color: burlywood;
+  width: 500px;
+  min-height: 350px;
+  padding: 5px;
+}
+
+.ProductsList__list {
+  list-style: none;
+}
