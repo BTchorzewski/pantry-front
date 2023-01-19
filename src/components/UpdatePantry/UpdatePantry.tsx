@@ -1,6 +1,6 @@
 import './UpdatePantry.css';
 import { useState } from 'react';
-import { ChangePantryNameForm } from '../Forms/ChangePantryNameForm';
+import { ChangePantryNameForm } from '../Forms/ChangePantryNameForm/ChangePantryNameForm';
 interface Props {
   pantryId: string;
 }

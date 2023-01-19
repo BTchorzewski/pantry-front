@@ -1,9 +1,9 @@
 import './ChangePantryNameForm.css';
-import { protectedBasicRoute } from '../../utils/fetch';
+import { protectedBasicRoute } from '../../../utils/fetch';
 import { AxiosError } from 'axios';
-import { usePantries } from '../../hooks/usePantries';
-import { useRefreshToken } from '../../hooks/useRefreshToken';
-import { useBearerToken } from '../../hooks/useBearerToken';
+import { usePantries } from '../../../hooks/usePantries';
+import { useRefreshToken } from '../../../hooks/useRefreshToken';
+import { useBearerToken } from '../../../hooks/useBearerToken';
 import React, { useRef } from 'react';
 
 interface Props {
