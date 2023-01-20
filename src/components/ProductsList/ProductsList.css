@@ -11,3 +11,7 @@
 .ProductsList__list {
   list-style: none;
 }
+.ProductsList__item {
+  background-color: blueviolet;
+  margin-bottom: 5px;
+}

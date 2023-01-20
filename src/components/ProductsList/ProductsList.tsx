@@ -5,6 +5,7 @@ import { basicRoute } from '../../utils/fetch';
 import { useRefreshToken } from '../../hooks/useRefreshToken';
 import { useBearerToken } from '../../hooks/useBearerToken';
 import { useToggle } from '../../hooks/useToggle';
+import { countDaysLeft } from '../../utils/utils';
 
 interface Props {
   pantryId: string;
@@ -12,10 +13,18 @@ interface Props {
 
 export const ProductsList = ({ pantryId }: Props) => {
   const [pantryName, setPantryName] = useState<string | null>(null);
-  const [products, setProducts] = useState<Item[] | null>(null);
+  const [products, setProducts] = useState<Item[]>([]);
   const refreshToken = useRefreshToken();
   const bearer = useBearerToken();
   const [toggle, switchToggle] = useToggle(false);
+
+  const removeItem = (itemId: string) => {
+    // @todo remove this item from the DB.
+
+    setProducts((prevState) => {
+      return prevState?.filter(({ id }) => id !== itemId);
+    });
+  };
 
   useEffect(() => {
     (async () => {
@@ -30,7 +39,7 @@ export const ProductsList = ({ pantryId }: Props) => {
         refreshToken();
       }
     })();
-  }, []);
+  }, [toggle]);
 
   return (
     <>
@@ -48,10 +57,19 @@ export const ProductsList = ({ pantryId }: Props) => {
             <ul className='ProductsList__list'>
               {products.map(({ id, name, expiration, createdAt }) => {
                 return (
-                  <li key={id} className='ProductsList__product'>
+                  <li key={id} className='ProductsList__item'>
                     <div className='ProductsList__text'>name: {name}</div>
-                    <div>createdAt: {JSON.stringify(createdAt)}</div>
-                    <div>expiration: {JSON.stringify(expiration)}</div>
+                    <div>
+                      {countDaysLeft(new Date(createdAt), new Date(expiration))}{' '}
+                      days left.
+                    </div>
+                    <button
+                      onClick={(event) => {
+                        removeItem(id);
+                      }}
+                    >
+                      remove
+                    </button>
                   </li>
                 );
               })}

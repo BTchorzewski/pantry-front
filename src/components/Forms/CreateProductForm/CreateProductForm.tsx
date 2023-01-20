@@ -2,15 +2,18 @@ import './CreateProductForm.css';
 import { useRef } from 'react';
 import { basicRoute } from '../../../utils/fetch';
 import { useBearerToken } from '../../../hooks/useBearerToken';
+import { useRefreshToken } from '../../../hooks/useRefreshToken';
+import { usePantries } from '../../../hooks/usePantries';
 interface Props {
   pantryId: string;
   hideForm: () => void;
 }
 export const CreateProductForm = ({ pantryId, hideForm }: Props) => {
   const bearer = useBearerToken();
+  const refreshToken = useRefreshToken();
   const nameRef = useRef<HTMLInputElement>(null);
   const expirationRef = useRef<HTMLInputElement>(null);
-
+  const { addProduct } = usePantries();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (
@@ -28,10 +31,16 @@ export const CreateProductForm = ({ pantryId, hideForm }: Props) => {
         )
         .then((value) => {
           hideForm();
+
+          // @todo we must add this product with id to products list.
+          // @ts-expect-error
+          addProduct(pantryId, new Date(expirationRef?.current?.value));
+
           console.log(value.statusText);
         })
         .catch((reason) => {
           console.log(reason);
+          refreshToken();
         });
     }
   };
