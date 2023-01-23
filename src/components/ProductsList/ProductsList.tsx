@@ -5,7 +5,8 @@ import { basicRoute } from '../../utils/fetch';
 import { useRefreshToken } from '../../hooks/useRefreshToken';
 import { useBearerToken } from '../../hooks/useBearerToken';
 import { useToggle } from '../../hooks/useToggle';
-import { countDaysLeft } from '../../utils/utils';
+import { countDaysLeft, expirationStatus } from '../../utils/utils';
+import { usePantries } from '../../hooks/usePantries';
 
 interface Props {
   pantryId: string;
@@ -17,13 +18,25 @@ export const ProductsList = ({ pantryId }: Props) => {
   const refreshToken = useRefreshToken();
   const bearer = useBearerToken();
   const [toggle, switchToggle] = useToggle(false);
-
-  const removeItem = (itemId: string) => {
-    // @todo remove this item from the DB.
-
-    setProducts((prevState) => {
-      return prevState?.filter(({ id }) => id !== itemId);
-    });
+  const { removeProduct } = usePantries();
+  const removeItem = async (itemId: string) => {
+    basicRoute
+      .delete(`/pantry/item/${itemId}`, bearer)
+      .then((value) => {
+        const [{ createdAt, expiration }] = products.filter(
+          (product) => product.id === itemId
+        );
+        const daysLeft = countDaysLeft(createdAt, expiration);
+        const status = expirationStatus(daysLeft);
+        removeProduct(pantryId, status);
+        setProducts((prevState) => {
+          return prevState?.filter(({ id }) => id !== itemId);
+        });
+      })
+      .catch((err) => {
+        refreshToken();
+        console.log('Product list- removing item', err);
+      });
   };
 
   useEffect(() => {

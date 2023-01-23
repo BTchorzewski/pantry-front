@@ -6,12 +6,16 @@ interface Props {
   children: React.ReactNode;
 }
 
+type ExpirationStatus = 'fresh' | 'expiredSoon' | 'expired';
 type deletePantry = (pantryId: string) => void;
 type updatePantry = (pantryId: string, name: string) => void;
 type addPantry = (pantry: ShortPantry) => void;
 type AddPantries = (pantries: ShortPantry[]) => void;
 type AddProduct = (pantryId: string, expiration: Date) => void;
-
+type RemoveProduct = (
+  pantryId: string,
+  expirationStatus: ExpirationStatus
+) => void;
 export interface PantriesContextType {
   pantries: ShortPantry[] | null;
   addPantries: AddPantries;
@@ -19,9 +23,11 @@ export interface PantriesContextType {
   updatePantry: updatePantry;
   deletePantry: deletePantry;
   addProduct: AddProduct;
+  removeProduct: RemoveProduct;
 }
 
 export const PantriesContext = createContext<PantriesContextType>({
+  removeProduct(pantryId: string, expirationStatus: ExpirationStatus): void {},
   addProduct(pantryId: string, expiration: Date): void {},
   pantries: null,
   addPantry(pantry: ShortPantry): void {},
@@ -81,6 +87,19 @@ export const PantriesProvider = ({ children }: Props) => {
     });
   };
 
+  const removeProduct: RemoveProduct = (pantryId, expirationStatus) => {
+    setPantries((prevPantries) => {
+      return prevPantries.map((pantry) => {
+        if (pantry.id === pantryId) {
+          pantry.stats.total -= 1;
+          pantry.stats[expirationStatus] -= 1;
+          return pantry;
+        }
+        return pantry;
+      });
+    });
+  };
+
   return (
     <PantriesContext.Provider
       value={{
@@ -90,6 +109,7 @@ export const PantriesProvider = ({ children }: Props) => {
         deletePantry,
         updatePantry,
         addProduct,
+        removeProduct,
       }}
     >
       {children}
