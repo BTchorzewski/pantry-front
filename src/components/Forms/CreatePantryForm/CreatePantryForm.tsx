@@ -8,14 +8,14 @@ import { useBearerToken } from '../../../hooks/useBearerToken';
 import { useRefreshToken } from '../../../hooks/useRefreshToken';
 
 export const CreatePantryForm = () => {
-  const { addPantry } = usePantries();
+  const { addPantryToContext } = usePantries();
   const bearer = useBearerToken();
   const refreshToken = useRefreshToken();
   const nameRef = useRef<HTMLInputElement>(null);
   const createPantry = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
     try {
-      if (nameRef?.current?.value) {
+      if (nameRef?.current?.value.length) {
         const results = await basicRoute.post(
           '/pantry',
           { name: nameRef.current.value },
@@ -25,7 +25,7 @@ export const CreatePantryForm = () => {
         const { pantryId: id } = results.data as CreatePantryResponse;
 
         if (id !== undefined) {
-          addPantry({
+          addPantryToContext({
             id,
             name: nameRef.current.value,
             stats: {

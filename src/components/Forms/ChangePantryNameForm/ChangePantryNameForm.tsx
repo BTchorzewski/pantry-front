@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const ChangePantryNameForm = ({ pantryId, toggleShow }: Props) => {
-  const { updatePantry } = usePantries();
+  const { updatePantryInContext } = usePantries();
   const refreshToken = useRefreshToken();
   const bearer = useBearerToken();
   const nameRef = useRef<HTMLInputElement>(null);
@@ -30,7 +30,7 @@ export const ChangePantryNameForm = ({ pantryId, toggleShow }: Props) => {
           bearer
         );
 
-        updatePantry(pantryId, nameRef.current.value);
+        updatePantryInContext(pantryId, nameRef.current.value);
       }
       toggleShow();
     } catch (e) {

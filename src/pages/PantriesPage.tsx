@@ -1,19 +1,18 @@
 import { useToken } from '../hooks/useToken';
-import { useEffect, useState } from 'react';
-import { FetchShortPantriesResponse, ShortPantry } from '../types';
-import { basicRoute, protectedBasicRoute } from '../utils/fetch';
+import { useEffect } from 'react';
+import { FetchShortPantriesResponse } from '../types';
+import { basicRoute } from '../utils/fetch';
 import { BriefPantry } from '../components/Pantry/BriefPantry';
 import { AxiosError } from 'axios';
 import { CreatePantry } from '../components/CreatePantry/CreatePantry';
-import { useNavigate, redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useRefreshToken } from '../hooks/useRefreshToken';
 import './PantriesPage.css';
 import { usePantries } from '../hooks/usePantries';
 
 export const PantriesPage = () => {
-  const { pantries, addPantries } = usePantries();
-  const [token, setToken] = useToken();
-  const [error, setError] = useState<null | string>(null);
+  const { pantriesInContext, addPantriesToContext } = usePantries();
+  const [token] = useToken();
   const navigation = useNavigate();
   const refreshToken = useRefreshToken();
   useEffect(() => {
@@ -28,7 +27,7 @@ export const PantriesPage = () => {
         const results = await basicRoute.get('/pantry', config);
 
         const shortPantries = results.data as FetchShortPantriesResponse;
-        addPantries(shortPantries.data);
+        addPantriesToContext(shortPantries.data);
       } catch (e: unknown) {
         if (e instanceof AxiosError) {
           if (e.response?.status === 401) {
@@ -46,8 +45,8 @@ export const PantriesPage = () => {
     <div className='Pantries'>
       <h2 className='Pantries__title'>Pantries: </h2>
       <ul className='Pantries__list'>
-        {pantries?.length ? (
-          pantries.map((pantry) => {
+        {pantriesInContext?.length ? (
+          pantriesInContext.map((pantry) => {
             return (
               <li className='Pantries__item' key={pantry.id}>
                 <BriefPantry

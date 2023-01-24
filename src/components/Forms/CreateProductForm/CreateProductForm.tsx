@@ -13,7 +13,7 @@ export const CreateProductForm = ({ pantryId, hideForm }: Props) => {
   const refreshToken = useRefreshToken();
   const nameRef = useRef<HTMLInputElement>(null);
   const expirationRef = useRef<HTMLInputElement>(null);
-  const { addProduct } = usePantries();
+  const { increaseStatsInPantryInContext } = usePantries();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (
@@ -33,8 +33,12 @@ export const CreateProductForm = ({ pantryId, hideForm }: Props) => {
           hideForm();
 
           // @todo we must add this product with id to products list.
-          // @ts-expect-error
-          addProduct(pantryId, new Date(expirationRef?.current?.value));
+          if (expirationRef?.current?.value.length) {
+            increaseStatsInPantryInContext(
+              pantryId,
+              new Date(expirationRef.current.value)
+            );
+          }
 
           console.log(value.statusText);
         })

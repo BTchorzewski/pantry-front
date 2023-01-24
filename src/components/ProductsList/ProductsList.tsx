@@ -18,20 +18,20 @@ export const ProductsList = ({ pantryId }: Props) => {
   const refreshToken = useRefreshToken();
   const bearer = useBearerToken();
   const [toggle, switchToggle] = useToggle(false);
-  const { removeProduct } = usePantries();
-  const removeItem = async (itemId: string) => {
+  const { decreaseStatsInPantryInContext } = usePantries();
+  const removeItem = (itemId: string) => {
     basicRoute
       .delete(`/pantry/item/${itemId}`, bearer)
       .then((value) => {
-        const [{ createdAt, expiration }] = products.filter(
+        const [{ expiration }] = products.filter(
           (product) => product.id === itemId
         );
-        const daysLeft = countDaysLeft(createdAt, expiration);
-        const status = expirationStatus(daysLeft);
-        removeProduct(pantryId, status);
+
         setProducts((prevState) => {
           return prevState?.filter(({ id }) => id !== itemId);
         });
+
+        decreaseStatsInPantryInContext(pantryId, new Date(expiration));
       })
       .catch((err) => {
         refreshToken();

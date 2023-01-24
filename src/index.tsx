@@ -11,13 +11,11 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <AuthProvider>
-      <PantriesProvider>
-        <RouterProvider router={router} />
-      </PantriesProvider>
-    </AuthProvider>
-  </React.StrictMode>
+  <AuthProvider>
+    <PantriesProvider>
+      <RouterProvider router={router} />
+    </PantriesProvider>
+  </AuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

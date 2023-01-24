@@ -2,12 +2,12 @@ import './CreatePantry.css';
 import { usePantries } from '../../hooks/usePantries';
 import { CreatePantryForm } from '../Forms/CreatePantryForm/CreatePantryForm';
 export const CreatePantry = () => {
-  const { pantries } = usePantries();
+  const { pantriesInContext } = usePantries();
   return (
     <div className='CreatePantry'>
       Create pantry :)
       <CreatePantryForm />
-      {pantries?.length ? <p>Pantry has been created.</p> : null}
+      {pantriesInContext?.length ? <p>Pantry has been created.</p> : null}
     </div>
   );
 };
