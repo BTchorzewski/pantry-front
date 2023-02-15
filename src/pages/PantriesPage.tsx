@@ -1,7 +1,7 @@
 import { useToken } from '../hooks/useToken';
 import { useEffect } from 'react';
 import { FetchShortPantriesResponse } from '../types';
-import { basicRoute } from '../utils/fetch';
+// import { basicRoute } from '../utils/fetch';
 import { BriefPantry } from '../components/Pantry/BriefPantry';
 import { AxiosError } from 'axios';
 import { CreatePantry } from '../components/CreatePantry/CreatePantry';
@@ -9,12 +9,13 @@ import { useNavigate } from 'react-router-dom';
 import { useRefreshToken } from '../hooks/useRefreshToken';
 import './PantriesPage.css';
 import { usePantries } from '../hooks/usePantries';
-
+import { useAxios } from '../hooks/useAxios';
 export const PantriesPage = () => {
   const { pantriesInContext, addPantriesToContext } = usePantries();
   const [token] = useToken();
   const navigation = useNavigate();
   const refreshToken = useRefreshToken();
+  const basicRoute = useAxios();
   useEffect(() => {
     (async () => {
       try {
@@ -24,8 +25,8 @@ export const PantriesPage = () => {
             'Authorization': `Bearer ${token}`,
           },
         };
-        const results = await basicRoute.get('/pantry/stats', config);
-
+        const results = await basicRoute.get('/pantry/stats');
+        console.log({ results });
         const shortPantries = results.data as FetchShortPantriesResponse;
         addPantriesToContext(shortPantries.data);
       } catch (e: unknown) {
