@@ -24,7 +24,7 @@ export const PantriesPage = () => {
             'Authorization': `Bearer ${token}`,
           },
         };
-        const results = await basicRoute.get('/pantry', config);
+        const results = await basicRoute.get('/pantry/stats', config);
 
         const shortPantries = results.data as FetchShortPantriesResponse;
         addPantriesToContext(shortPantries.data);
