@@ -6,21 +6,21 @@ import { AxiosError } from 'axios';
 import { usePantries } from '../../../hooks/usePantries';
 import { useBearerToken } from '../../../hooks/useBearerToken';
 import { useRefreshToken } from '../../../hooks/useRefreshToken';
+import { useAxios } from '../../../hooks/useAxios';
 
 export const CreatePantryForm = () => {
   const { addPantryToContext } = usePantries();
   const bearer = useBearerToken();
   const refreshToken = useRefreshToken();
   const nameRef = useRef<HTMLInputElement>(null);
+  const basicRoute = useAxios();
   const createPantry = async (e: FormEvent): Promise<void> => {
     e.preventDefault();
     try {
       if (nameRef?.current?.value.length) {
-        const results = await basicRoute.post(
-          '/pantry',
-          { name: nameRef.current.value },
-          bearer
-        );
+        const results = await (
+          await basicRoute
+        ).post('/pantry', { name: nameRef.current.value });
 
         const { pantryId: id } = results.data as CreatePantryResponse;
 

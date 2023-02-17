@@ -1,5 +1,5 @@
 import { useToken } from '../hooks/useToken';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { FetchShortPantriesResponse } from '../types';
 // import { basicRoute } from '../utils/fetch';
 import { BriefPantry } from '../components/Pantry/BriefPantry';
@@ -15,35 +15,27 @@ export const PantriesPage = () => {
   const [token] = useToken();
   const navigation = useNavigate();
   const refreshToken = useRefreshToken();
+
   const basicRoute = useAxios();
   useEffect(() => {
     (async () => {
       try {
-        const config = {
-          headers: {
-            // prettier-ignore
-            'Authorization': `Bearer ${token}`,
-          },
-        };
-        const results = await basicRoute.get('/pantry/stats');
+        const results = await (await basicRoute).get('/pantry/stats');
         console.log({ results });
         const shortPantries = results.data as FetchShortPantriesResponse;
         addPantriesToContext(shortPantries.data);
       } catch (e: unknown) {
+        console.log('pantries page', e);
         if (e instanceof AxiosError) {
-          if (e.response?.status === 401) {
-            await refreshToken();
-            navigation('/login', { replace: true });
-          }
+          console.log('pantries page2', e);
         }
       }
     })();
   }, []);
 
-  if (token === null) return null;
-
   return (
     <div className='Pantries'>
+      <p>token: {token}</p>
       <h2 className='Pantries__title'>Pantries: </h2>
       <ul className='Pantries__list'>
         {pantriesInContext?.length ? (

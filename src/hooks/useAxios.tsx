@@ -1,18 +1,26 @@
 import { protectedBasicRoute } from '../utils/fetch';
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useToken } from './useToken';
 import { useRefreshToken } from './useRefreshToken';
-
-export function useAxios() {
+import { useBearerToken } from './useBearerToken';
+import { TokensRes } from '../types';
+import { useState } from 'react';
+export async function useAxios() {
   const [token, setToken] = useToken();
-  const refreshToken = useRefreshToken();
-  // @typescript-eslint/prefer-ts-expect-error
+  const [count, setCount] = useState(0);
+  console.log({ count });
+  axios.defaults.withCredentials = true;
+  const protectedBasicRoute = axios.create({
+    baseURL: 'http://localhost:3001',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
   protectedBasicRoute.interceptors.request.use(
     (config) => {
-      // Do something before request is sent
-      console.log({ token });
-      // @ts-ignore
-      config.headers.common['Authorization'] = `Bearer ${token}`;
+      setCount((prevState) => prevState++);
       return config;
     },
     (error: AxiosError) => {
@@ -29,19 +37,24 @@ export function useAxios() {
       return response;
     },
     async (error: AxiosError) => {
-      // Any status codes that falls outside the range of 2xx cause this function to trigger
-      // Do something with response error
-      console.log('error response', { token });
-      const { config, status } = error;
-      if (status === 403) {
-        const refreshedToken = await refreshToken();
-        // @ts-ignore
-        config.headers.common['Authorization'] = `Bearer ${refreshedToken}`;
-        // @ts-ignore
-        return protectedBasicRoute(config);
-      }
+      const config = error.config;
 
-      return Promise.reject(error);
+      if (error.response?.status === 401 || count < 3) {
+        const { data } = await axios.get(
+          'http://localhost:3001/auth/refresh-token',
+          { withCredentials: true }
+        );
+        const { accessToken } = data as TokensRes;
+        if (config !== undefined) {
+          config.headers = {
+            ...config.headers,
+            Authorization: `Bearer ${accessToken}`,
+          };
+          setToken(accessToken);
+          return protectedBasicRoute.request(config);
+        }
+      }
+      return await Promise.reject(error);
     }
   );
   return protectedBasicRoute;

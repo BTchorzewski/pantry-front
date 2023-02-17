@@ -13,7 +13,7 @@ export const useRefreshToken = (): UseRefreshTokenReturn => {
       const { accessToken } = data as TokensRes;
       setToken(accessToken);
     } catch (e) {
-      setToken(null);
+      // setToken(null);
     }
   };
 
