@@ -1,8 +1,8 @@
-import { useToken } from './useToken';
+import { useAuth } from './useAuth';
 import { AxiosRequestConfig } from 'axios';
 
 export const useBearerToken = (): AxiosRequestConfig => {
-  const [token] = useToken();
+  const [token] = useAuth();
   return {
     headers: {
       Authorization: `Bearer ${token}`,

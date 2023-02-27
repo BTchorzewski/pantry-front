@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import { useToken } from '../../hooks/useToken';
+import { useAuth } from '../../hooks/useAuth';
 import { protectedBasicRoute } from '../../utils/fetch';
 
 export function Navigation() {
-  const [token, setToken] = useToken();
+  const [token, setToken] = useAuth();
   const logout = async () => {
     try {
       await protectedBasicRoute.get('/auth/logout');

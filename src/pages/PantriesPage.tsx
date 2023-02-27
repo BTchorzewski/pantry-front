@@ -1,4 +1,4 @@
-import { useToken } from '../hooks/useToken';
+import { useAuth } from '../hooks/useAuth';
 import { useEffect, useMemo } from 'react';
 import { FetchShortPantriesResponse } from '../types';
 // import { basicRoute } from '../utils/fetch';
@@ -12,7 +12,7 @@ import { usePantries } from '../hooks/usePantries';
 import { useAxios } from '../hooks/useAxios';
 export const PantriesPage = () => {
   const { pantriesInContext, addPantriesToContext } = usePantries();
-  const [token] = useToken();
+  const [token] = useAuth();
   const navigation = useNavigate();
   const refreshToken = useRefreshToken();
 

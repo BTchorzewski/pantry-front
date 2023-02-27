@@ -1,12 +1,13 @@
 import { protectedBasicRoute } from '../utils/fetch';
 import axios, { AxiosError } from 'axios';
-import { useToken } from './useToken';
+import { useAuth } from './useAuth';
 import { useRefreshToken } from './useRefreshToken';
 import { useBearerToken } from './useBearerToken';
 import { TokensRes } from '../types';
 import { useState } from 'react';
+
 export async function useAxios() {
-  const [token, setToken] = useToken();
+  const [token, setToken] = useAuth();
   const [count, setCount] = useState(0);
   console.log({ count });
   axios.defaults.withCredentials = true;

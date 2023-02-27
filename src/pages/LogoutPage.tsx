@@ -1,8 +1,8 @@
-import { useToken } from '../hooks/useToken';
+import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
 export const LogoutPage = () => {
-  const [token] = useToken();
+  const [token] = useAuth();
   const redirect = useNavigate();
   if (!token) {
     redirect('/');

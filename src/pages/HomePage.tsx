@@ -1,7 +1,7 @@
-import { useToken } from '../hooks/useToken';
+import { useAuth } from '../hooks/useAuth';
 
 export const HomePage = () => {
-  const [token] = useToken();
+  const [token] = useAuth();
   return (
     <>
       {token ? <p>You are logged in.</p> : null}
