@@ -52,7 +52,7 @@ export function Navigation() {
           </li>
         )}
       </ul>
-      {user ? null : <p className='Avatar'>Witaj! {user}</p>}
+      {!user ? null : <p className='Avatar'>Witaj! {user}</p>}
     </nav>
   );
 }
