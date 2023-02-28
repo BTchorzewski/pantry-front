@@ -2,9 +2,9 @@ import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
 export const LogoutPage = () => {
-  const [token] = useAuth();
+  const [user] = useAuth();
   const redirect = useNavigate();
-  if (!token) {
+  if (!user) {
     redirect('/');
   }
   return <main> logout page in development.</main>;

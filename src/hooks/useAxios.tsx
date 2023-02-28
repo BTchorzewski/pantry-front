@@ -1,21 +1,17 @@
-import { protectedBasicRoute } from '../utils/fetch';
 import axios, { AxiosError } from 'axios';
-import { useAuth } from './useAuth';
-import { useRefreshToken } from './useRefreshToken';
-import { useBearerToken } from './useBearerToken';
 import { TokensRes } from '../types';
 import { useState } from 'react';
-
+import { clearToken, getToken, setToken } from '../utils/token-session-storage';
+import { useNavigate } from 'react-router-dom';
 export async function useAxios() {
-  const [token, setToken] = useAuth();
   const [count, setCount] = useState(0);
-  console.log({ count });
+  const navigation = useNavigate();
   axios.defaults.withCredentials = true;
   const protectedBasicRoute = axios.create({
     baseURL: 'http://localhost:3001',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
 
@@ -40,19 +36,28 @@ export async function useAxios() {
     async (error: AxiosError) => {
       const config = error.config;
 
-      if (error.response?.status === 401 || count < 3) {
-        const { data } = await axios.get(
-          'http://localhost:3001/auth/refresh-token',
-          { withCredentials: true }
-        );
-        const { accessToken } = data as TokensRes;
-        if (config !== undefined) {
-          config.headers = {
-            ...config.headers,
-            Authorization: `Bearer ${accessToken}`,
-          };
-          setToken(accessToken);
-          return protectedBasicRoute.request(config);
+      if (error.response?.status === 401) {
+        try {
+          const { data } = await axios.get(
+            'http://localhost:3001/auth/refresh-token',
+            { withCredentials: true }
+          );
+          const { accessToken } = data as TokensRes;
+          if (config !== undefined) {
+            config.headers = {
+              ...config.headers,
+              Authorization: `Bearer ${accessToken}`,
+            };
+            setToken(accessToken);
+            return protectedBasicRoute.request(config);
+          }
+        } catch (e: unknown) {
+          if (e instanceof AxiosError) {
+            if ([400, 401, 403].includes(e.response?.status as number)) {
+              clearToken();
+              navigation('/login');
+            }
+          }
         }
       }
       return await Promise.reject(error);

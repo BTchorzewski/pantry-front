@@ -1,7 +1,6 @@
 import { useAuth } from '../hooks/useAuth';
 import { useEffect, useMemo } from 'react';
 import { FetchShortPantriesResponse } from '../types';
-// import { basicRoute } from '../utils/fetch';
 import { BriefPantry } from '../components/Pantry/BriefPantry';
 import { AxiosError } from 'axios';
 import { CreatePantry } from '../components/CreatePantry/CreatePantry';
@@ -14,7 +13,6 @@ export const PantriesPage = () => {
   const { pantriesInContext, addPantriesToContext } = usePantries();
   const [token] = useAuth();
   const navigation = useNavigate();
-  const refreshToken = useRefreshToken();
 
   const basicRoute = useAxios();
   useEffect(() => {

@@ -1,10 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { basicRoute, protectedBasicRoute } from '../utils/fetch';
-import { InvalidLoginRes, LoginReq, LoginRes } from '../types';
+import { InvalidLoginRes, JwtPayload, LoginReq, LoginRes } from '../types';
 import { AxiosError } from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import * as jwtDecode from 'jwt-decode';
+import jwt from 'jwt-decode';
+import { getToken, setToken } from '../utils/token-session-storage';
+
 export const LoginPage = () => {
   const loginRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -21,9 +23,9 @@ export const LoginPage = () => {
       const results = await protectedBasicRoute.post('/auth/login', data);
       if (results.status === 200) {
         const { accessToken } = (await results.data) as LoginRes;
-        // @ts-ignore
-        const decodedToken = jwtDecode(accessToken);
-        console.log(decodedToken);
+        const { login } = jwt<JwtPayload>(accessToken);
+        setToken(accessToken);
+        setUser(login);
       }
     } catch (error: unknown) {
       if (error instanceof AxiosError) {

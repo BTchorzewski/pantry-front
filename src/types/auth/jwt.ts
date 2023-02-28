@@ -1,5 +1,8 @@
 export interface JwtPayload {
   id: string;
+  login: string;
+  iat: number;
+  exp: number;
 }
 
 export interface LoginRes {
