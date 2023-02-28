@@ -5,7 +5,7 @@ import { AxiosError } from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import jwt from 'jwt-decode';
-import { getToken, setToken } from '../utils/token-session-storage';
+import { setToken } from '../utils/token-session-storage';
 
 export const LoginPage = () => {
   const loginRef = useRef<HTMLInputElement>(null);
@@ -18,7 +18,6 @@ export const LoginPage = () => {
       email: loginRef?.current?.value,
       password: passwordRef?.current?.value,
     } as LoginReq;
-    console.log('login');
     try {
       const results = await protectedBasicRoute.post('/auth/login', data);
       if (results.status === 200) {
@@ -29,6 +28,7 @@ export const LoginPage = () => {
       }
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
+        // @todo navigate to error page.
         console.log(error.response?.data);
       }
     }
@@ -57,7 +57,6 @@ export const LoginPage = () => {
       <button className='button' type={'submit'}>
         Login
       </button>
-      token: {user}
     </form>
   );
 };

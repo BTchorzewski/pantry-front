@@ -33,7 +33,6 @@ export const PantriesPage = () => {
 
   return (
     <div className='Pantries'>
-      <p>token: {token}</p>
       <h2 className='Pantries__title'>Pantries: </h2>
       <ul className='Pantries__list'>
         {pantriesInContext?.length ? (
