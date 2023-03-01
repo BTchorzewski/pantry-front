@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
         element: <LogoutPage />,
       },
       {
-        path: '/pantries',
+        path: '/pantriesSlice',
         element: <PantriesPage />,
       },
       {

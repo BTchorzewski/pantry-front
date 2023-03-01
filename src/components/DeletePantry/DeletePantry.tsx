@@ -14,6 +14,7 @@ export const DeletePantry = ({ pantryId }: Props) => {
   const refreshToken = useRefreshToken();
   const deletePantryAPI = async () => {
     try {
+      // @ts-ignore
       await protectedBasicRoute.delete(`/pantry/${pantryId}`, bearer);
       deletePantryFromContext(pantryId);
     } catch (e) {

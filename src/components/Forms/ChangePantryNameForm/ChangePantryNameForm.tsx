@@ -22,7 +22,8 @@ export const ChangePantryNameForm = ({ pantryId, toggleShow }: Props) => {
     try {
       if (nameRef?.current?.value) {
         console.log(nameRef?.current?.value);
-        const result = await protectedBasicRoute.put(
+        const fetch = await protectedBasicRoute();
+        const result = await fetch.put(
           `/pantry/${pantryId}`,
           {
             name: nameRef.current.value,

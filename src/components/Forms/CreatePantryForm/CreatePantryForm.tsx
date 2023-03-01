@@ -41,7 +41,7 @@ export const CreatePantryForm = () => {
       if (e instanceof AxiosError) {
         if (e.response?.status === 401) {
           await refreshToken();
-          //  @todo create hooks for pantries management.
+          //  @todo create hooks for pantriesSlice management.
         }
       }
     }

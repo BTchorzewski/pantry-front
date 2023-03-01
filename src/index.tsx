@@ -6,16 +6,17 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './router/router';
 import { AuthProvider } from './context/AuthProvider';
 import { PantriesProvider } from './context/PantriesProvider';
-
+import { Provider } from 'react-redux';
+import { store } from './redux/store/store';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <AuthProvider>
+  <Provider store={store}>
     <PantriesProvider>
       <RouterProvider router={router} />
     </PantriesProvider>
-  </AuthProvider>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

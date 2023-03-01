@@ -23,9 +23,9 @@ export const PantriesPage = () => {
         const shortPantries = results.data as FetchShortPantriesResponse;
         addPantriesToContext(shortPantries.data);
       } catch (e: unknown) {
-        console.log('pantries page', e);
+        console.log('pantriesSlice page', e);
         if (e instanceof AxiosError) {
-          console.log('pantries page2', e);
+          console.log('pantriesSlice page2', e);
         }
       }
     })();

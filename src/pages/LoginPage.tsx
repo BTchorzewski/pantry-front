@@ -1,62 +1,61 @@
 import React, { useEffect, useRef } from 'react';
-import { basicRoute, protectedBasicRoute } from '../utils/fetch';
-import { InvalidLoginRes, JwtPayload, LoginReq, LoginRes } from '../types';
-import { AxiosError } from 'axios';
+import { JwtPayload, LoginReq, LoginRes } from '../types';
+import { AxiosError, AxiosInstance } from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import jwt from 'jwt-decode';
-import { setToken } from '../utils/token-session-storage';
-
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  authSelector,
+  InitialState,
+  login,
+} from '../redux/authSlice/authSlice';
 export const LoginPage = () => {
+  const dispatch = useDispatch();
+  const authStore = useSelector(authSelector);
   const loginRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const [user, setUser] = useAuth();
   const navigate = useNavigate();
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const data = {
       email: loginRef?.current?.value,
       password: passwordRef?.current?.value,
     } as LoginReq;
-    try {
-      const results = await protectedBasicRoute.post('/auth/login', data);
-      if (results.status === 200) {
-        const { accessToken } = (await results.data) as LoginRes;
-        const { login } = jwt<JwtPayload>(accessToken);
-        setToken(accessToken);
-        setUser(login);
-      }
-    } catch (error: unknown) {
-      if (error instanceof AxiosError) {
-        // @todo navigate to error page.
-        console.log(error.response?.data);
-      }
-    }
+    // @ts-ignore
+    await dispatch(login(data));
+    console.log('dispatch results in login feature.', authStore);
   };
 
-  useEffect(() => {
-    if (user !== null) navigate('/pantries');
-  }, [user]);
+  if (authStore.auth.isAuth) {
+    navigate('/');
+  }
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <form className='Form' onSubmit={onSubmit}>
-      <label htmlFor='email' className='Form__label'>
-        Email
-        <input type='text' className='Form__input' id='email' ref={loginRef} />
-      </label>
-      <label htmlFor='password' className='Form__label'>
-        Password:
-        <input
-          type='password'
-          className='Form__input'
-          id='password'
-          ref={passwordRef}
-        />
-      </label>
-      <button className='button' type={'submit'}>
-        Login
-      </button>
-    </form>
+    <>
+      <form className='Form' onSubmit={onSubmit}>
+        <label htmlFor='email' className='Form__label'>
+          Email
+          <input
+            type='text'
+            className='Form__input'
+            id='email'
+            ref={loginRef}
+          />
+        </label>
+        <label htmlFor='password' className='Form__label'>
+          Password:
+          <input
+            type='password'
+            className='Form__input'
+            id='password'
+            ref={passwordRef}
+          />
+        </label>
+        <button className='button' type={'submit'}>
+          Login
+        </button>
+      </form>
+    </>
   );
 };

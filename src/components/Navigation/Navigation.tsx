@@ -1,20 +1,11 @@
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
-import { protectedBasicRoute } from '../../utils/fetch';
-import { clearToken } from '../../utils/token-session-storage';
-
+import { authSelector, logout } from '../../redux/authSlice/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
 export function Navigation() {
-  const [user, setUser] = useAuth();
-  const logout = async () => {
-    try {
-      await protectedBasicRoute.get('/auth/logout');
-    } catch (e) {
-      console.error(e);
-    } finally {
-      clearToken();
-      setUser(null);
-    }
-  };
+  const dispatch = useDispatch();
+  const {
+    auth: { isAuth, user },
+  } = useSelector(authSelector);
   return (
     <nav className='Navigation'>
       <ul className='Navigation__list'>
@@ -23,28 +14,35 @@ export function Navigation() {
             Home
           </Link>
         </li>
-        {!user ? null : (
+        {!isAuth ? null : (
           <li className='Navigation__item'>
-            <Link className='Navigation__link' to={'/pantries'}>
+            <Link className='Navigation__link' to={'/pantriesSlice'}>
               Pantries
             </Link>
           </li>
         )}
-        {user ? null : (
+        {isAuth ? null : (
           <li className='Navigation__item'>
             <Link className='Navigation__link' to={'login'}>
               Login
             </Link>
           </li>
         )}
-        {!user ? null : (
+        {!isAuth ? null : (
           <li className='Navigation__item'>
-            <Link className='Navigation__link' to={'logout'} onClick={logout}>
+            <Link
+              className='Navigation__link'
+              to={'logout'}
+              onClick={async (event) => {
+                // @ts-ignore
+                dispatch(logout());
+              }}
+            >
               Logout
             </Link>
           </li>
         )}
-        {user ? null : (
+        {isAuth ? null : (
           <li className='Navigation__item'>
             <Link className='Navigation__link' to={'registration'}>
               Registration
@@ -52,7 +50,7 @@ export function Navigation() {
           </li>
         )}
       </ul>
-      {!user ? null : <p className='Avatar'>Witaj! {user}</p>}
+      {!isAuth ? null : <p className='Avatar'>Witaj! {user}</p>}
     </nav>
   );
 }
