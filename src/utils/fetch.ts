@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, AxiosInstance } from 'axios';
 import { TokensRes } from '../types';
 import { clearToken, getToken, setToken } from '../utils/token-session-storage';
 
@@ -9,7 +9,7 @@ export const basicRoute = axios.create({
   },
 });
 
-export async function protectedBasicRoute() {
+export function protectedBasicRoute(): AxiosInstance {
   axios.defaults.withCredentials = true;
   const protectedRoute = axios.create({
     baseURL: 'http://localhost:3001',
@@ -21,7 +21,6 @@ export async function protectedBasicRoute() {
 
   protectedRoute.interceptors.request.use(
     (config) => {
-      console.log('sending request');
       return config;
     },
     (error: AxiosError) => {

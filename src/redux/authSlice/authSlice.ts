@@ -23,8 +23,7 @@ export const login = createAsyncThunk('auth/login', async (data, thunkAPI) => {
   // @ts-ignore
   const results = await basicRoute.post('/auth/login', data);
   const { accessToken } = (await results.data) as LoginRes;
-  const { login }: JwtPayload = jwt(accessToken);
-  return login;
+  return accessToken;
 });
 
 export const logout = createAsyncThunk(
@@ -50,10 +49,11 @@ const authSlice = createSlice({
         state.user = '';
       })
       .addCase(login.fulfilled, (state, action) => {
+        const payload: JwtPayload = jwt(action.payload);
         setToken(action.payload);
         state.status = 'finished';
         state.isAuth = true;
-        state.user = action.payload;
+        state.user = payload.login;
       })
       .addCase(logout.pending, (state) => {
         state.status = 'loading';

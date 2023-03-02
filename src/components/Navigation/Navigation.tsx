@@ -16,7 +16,7 @@ export function Navigation() {
         </li>
         {!isAuth ? null : (
           <li className='Navigation__item'>
-            <Link className='Navigation__link' to={'/pantriesSlice'}>
+            <Link className='Navigation__link' to={'/pantries'}>
               Pantries
             </Link>
           </li>

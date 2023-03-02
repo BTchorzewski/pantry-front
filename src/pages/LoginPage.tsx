@@ -4,11 +4,8 @@ import { AxiosError, AxiosInstance } from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  authSelector,
-  InitialState,
-  login,
-} from '../redux/authSlice/authSlice';
+import { authSelector, login } from '../redux/authSlice/authSlice';
+
 export const LoginPage = () => {
   const dispatch = useDispatch();
   const authStore = useSelector(authSelector);
@@ -24,11 +21,10 @@ export const LoginPage = () => {
     } as LoginReq;
     // @ts-ignore
     await dispatch(login(data));
-    console.log('dispatch results in login feature.', authStore);
   };
 
   if (authStore.auth.isAuth) {
-    navigate('/');
+    navigate('/pantries');
   }
 
   return (

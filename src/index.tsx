@@ -13,9 +13,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <Provider store={store}>
-    <PantriesProvider>
-      <RouterProvider router={router} />
-    </PantriesProvider>
+    <RouterProvider router={router} />
   </Provider>
 );
 
