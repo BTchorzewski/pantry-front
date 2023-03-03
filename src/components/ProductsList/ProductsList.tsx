@@ -1,56 +1,23 @@
 import './ProductsList.css';
 import { useEffect, useState } from 'react';
-import { FetchPantryByIdResponse, Item } from '../../types';
-import { basicRoute } from '../../utils/fetch';
-import { useRefreshToken } from '../../hooks/useRefreshToken';
-import { useBearerToken } from '../../hooks/useBearerToken';
+import { Item } from '../../types';
 import { useToggle } from '../../hooks/useToggle';
-import { countDaysLeft, expirationStatus } from '../../utils/utils';
-import { usePantries } from '../../hooks/usePantries';
+import { countDaysLeft } from '../../utils/utils';
 
 interface Props {
   pantryId: string;
 }
 
 export const ProductsList = ({ pantryId }: Props) => {
-  const [pantryName, setPantryName] = useState<string | null>(null);
-  const [products, setProducts] = useState<Item[]>([]);
-  const refreshToken = useRefreshToken();
-  const bearer = useBearerToken();
+  const [pantryName] = useState<string | null>(null);
+  const [products] = useState<Item[]>([]);
   const [toggle, switchToggle] = useToggle(false);
-  const { decreaseStatsInPantryInContext } = usePantries();
-  const removeItem = (itemId: string) => {
-    basicRoute
-      .delete(`/pantry/item/${itemId}`, bearer)
-      .then((value) => {
-        const [{ expiration }] = products.filter(
-          (product) => product.id === itemId
-        );
-
-        setProducts((prevState) => {
-          return prevState?.filter(({ id }) => id !== itemId);
-        });
-
-        decreaseStatsInPantryInContext(pantryId, new Date(expiration));
-      })
-      .catch((err) => {
-        refreshToken();
-        console.log('Product list- removing item', err);
-      });
-  };
+  const removeItem = (itemId: string) => {};
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await basicRoute.get(`/pantry/${pantryId}`, bearer);
-        const {
-          data: { name, items },
-        } = response.data as FetchPantryByIdResponse;
-        setProducts(items);
-        setPantryName(name);
-      } catch (e) {
-        refreshToken();
-      }
+      } catch (e) {}
     })();
   }, [toggle]);
 

@@ -1,8 +1,4 @@
-import { useBearerToken } from '../../hooks/useBearerToken';
-import { protectedBasicRoute } from '../../utils/fetch';
 import { AxiosError } from 'axios';
-import { useRefreshToken } from '../../hooks/useRefreshToken';
-import { usePantries } from '../../hooks/usePantries';
 import { useDispatch } from 'react-redux';
 import { removeShortPantries } from '../../redux/pantriesSlice/pantriesSlice';
 
