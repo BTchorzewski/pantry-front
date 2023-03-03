@@ -8,3 +8,6 @@ export type UpdateItemResponse = CreatedItemResponse;
 export type DeletedItemResponse = {
   message: 'The item has been deleted.';
 };
+
+export interface ICreateItemRequestData
+  extends Omit<CreatedItemResponse, 'id'> {}
