@@ -20,7 +20,7 @@ export const BriefPantry = ({ id, name, stats }: ShortPantry) => {
       {/* <div className='Brief-pantry__actions'> */}
       {/*  <ProductsList pantryId={id} /> */}
       {/*  <AddProduct pantryId={id} /> */}
-      {/*  <UpdatePantry pantryId={id}></UpdatePantry> */}
+      <UpdatePantry pantryId={id}></UpdatePantry>
       <DeletePantry pantryId={id} />
       {/* </div> */}
     </div>

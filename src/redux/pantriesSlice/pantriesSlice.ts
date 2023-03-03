@@ -1,14 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { protectedBasicRoute } from '../../utils/fetch';
 import {
-  JwtPayload,
-  LoginRes,
   ShortPantry,
   FetchShortPantriesResponse,
   CreatePantryResponse,
 } from '../../types';
-import jwt from 'jwt-decode';
-import { setToken } from '../../utils/token-session-storage';
 
 export interface InitialState {
   status: 'idle' | 'loading' | 'finished' | 'error';
@@ -52,6 +48,15 @@ export const removeShortPantries = createAsyncThunk(
   }
 );
 
+export const modifyNameShortPantries = createAsyncThunk(
+  'pantries/modify',
+  async (data: { id: string; name: string }, thunkAPI) => {
+    const axiosInstance = protectedBasicRoute();
+    await axiosInstance.put(`/pantry/${data.id}`, { name: data.name });
+    return data;
+  }
+);
+
 const pantriesSlice = createSlice({
   name: 'pantries',
   initialState,
@@ -80,7 +85,7 @@ const pantriesSlice = createSlice({
       })
       .addCase(addShortPantries.fulfilled, (state, action) => {
         state.status = 'finished';
-        // @ts-ignore
+        // @todo change it. backend will create object and send it back to a client.
         state.pantries.push({
           id: action.payload.id,
           name: action.payload.name,
@@ -105,6 +110,23 @@ const pantriesSlice = createSlice({
         state.pantries = state.pantries.filter(
           (shortPantry) => shortPantry.id !== action.payload
         );
+      })
+      .addCase(modifyNameShortPantries.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(modifyNameShortPantries.rejected, (state, action) => {
+        state.status = 'error';
+      })
+      .addCase(modifyNameShortPantries.fulfilled, (state, action) => {
+        state.status = 'finished';
+        // @ts-ignore
+        state.pantries = state.pantries.map((shortPantry) => {
+          if (shortPantry.id === action.payload.id) {
+            shortPantry.name = action.payload.name;
+            return shortPantry;
+          }
+          return shortPantry;
+        });
       })
       .addDefaultCase((state) => {});
   },

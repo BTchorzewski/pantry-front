@@ -1,6 +1,8 @@
 import './ChangePantryNameForm.css';
 import { AxiosError } from 'axios';
 import React, { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { modifyNameShortPantries } from '../../../redux/pantriesSlice/pantriesSlice';
 
 interface Props {
   pantryId: string;
@@ -9,11 +11,15 @@ interface Props {
 
 export const ChangePantryNameForm = ({ pantryId, toggleShow }: Props) => {
   const nameRef = useRef<HTMLInputElement>(null);
-
+  const dispatch = useDispatch();
   const updateName = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       if (nameRef?.current?.value) {
+        dispatch(
+          // @ts-ignore
+          modifyNameShortPantries({ id: pantryId, name: nameRef.current.value })
+        );
       }
       toggleShow();
     } catch (e) {
