@@ -1,22 +1,31 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { BriefPantry } from '../../components/Pantry/BriefPantry';
 import { CreatePantry } from '../../components/CreatePantry/CreatePantry';
-import { useNavigate } from 'react-router-dom';
 import './PantriesPage.css';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchShortPantries,
   pantriesSelector,
 } from '../../redux/pantriesSlice/pantriesSlice';
+import { Item } from '../../types';
 export const PantriesPage = () => {
   const dispatch = useDispatch();
   const shortPantriesState = useSelector(pantriesSelector);
+  // @ts-ignore
+  const products: Item[] = useSelector((state) => state?.items?.items);
   useEffect(() => {
     (async () => {
       // @ts-ignore
       dispatch(fetchShortPantries());
     })();
-  }, [dispatch]);
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      // @ts-ignore
+      dispatch(fetchShortPantries());
+    })();
+  }, [products]);
 
   // @ts-ignore
   if (shortPantriesState.pantries.status === 'loading')

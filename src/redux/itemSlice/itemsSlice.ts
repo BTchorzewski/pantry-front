@@ -6,6 +6,7 @@ import {
   Item,
   ICreateItemRequestData,
 } from '../../types';
+import { useSelector } from 'react-redux';
 
 type IItem = Omit<Item, 'createdAt'>;
 
@@ -29,7 +30,7 @@ export const fetchItemsFromPantryById = createAsyncThunk(
   'items/fetch',
   async (pantryId: string, thunkAPI) => {
     const axiosInstance = protectedBasicRoute();
-    const results = await axiosInstance.get(`/pantry/${pantryId}/item`);
+    const results = await axiosInstance.get(`/pantry/${pantryId}`);
     const response = (await results.data) as FetchPantryByIdResponse;
     return response.data.items;
   }
@@ -41,14 +42,16 @@ interface IAddItemToPantry {
   expiration: Date;
 }
 
-export const addSItemToPantry = createAsyncThunk(
+export const addItemToPantry = createAsyncThunk(
   'items/add',
   async ({ pantryId, name, expiration }: IAddItemToPantry, thunkAPI) => {
+    console.log('addItemToPantry');
     const axiosInstance = protectedBasicRoute();
     const results = await axiosInstance.post(`/pantry/${pantryId}/item`, {
       name,
       expiration,
     });
+    console.log('addItems', results);
     const createdItem = results.data as IItem;
     return createdItem;
   }
@@ -67,10 +70,10 @@ export const modifyItemInPantry = createAsyncThunk(
   'Items/modify',
   async ({ id, name, expiration }: IItem, thunkAPI) => {
     const axiosInstance = protectedBasicRoute();
-    const data = (await axiosInstance.put(`/pantry/${id}`, {
+    const data: IItem = await axiosInstance.put(`/pantry/${id}`, {
       name,
       expiration,
-    })) as IItem;
+    });
     return data;
   }
 );
@@ -85,6 +88,7 @@ const itemsSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(fetchItemsFromPantryById.rejected, (state, action) => {
+        console.log(action.error);
         state.status = 'error';
         state.items = [];
       })
@@ -92,13 +96,14 @@ const itemsSlice = createSlice({
         state.status = 'finished';
         state.items = action.payload;
       })
-      .addCase(addSItemToPantry.pending, (state) => {
+      .addCase(addItemToPantry.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(addSItemToPantry.rejected, (state, action) => {
+      .addCase(addItemToPantry.rejected, (state, action) => {
+        console.log('add error');
         state.status = 'error';
       })
-      .addCase(addSItemToPantry.fulfilled, (state, action) => {
+      .addCase(addItemToPantry.fulfilled, (state, action) => {
         state.status = 'finished';
         state.items.push(action.payload);
       })
@@ -112,9 +117,7 @@ const itemsSlice = createSlice({
       .addCase(removeItemFromPantry.fulfilled, (state, action) => {
         state.status = 'finished';
         // @ts-ignore
-        state.pantries = state.items.filter(
-          (item) => item.id !== action.payload
-        );
+        state.items = state.items.filter((item) => item.id !== action.payload);
       })
       .addCase(modifyItemInPantry.pending, (state) => {
         state.status = 'loading';

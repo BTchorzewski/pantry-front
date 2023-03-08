@@ -1,6 +1,7 @@
 import './CreateProductForm.css';
 import { useRef } from 'react';
-import { basicRoute } from '../../../utils/fetch';
+import { useDispatch } from 'react-redux';
+import { addItemToPantry } from '../../../redux/itemSlice/itemsSlice';
 
 interface Props {
   pantryId: string;
@@ -10,8 +11,22 @@ interface Props {
 export const CreateProductForm = ({ pantryId, hideForm }: Props) => {
   const nameRef = useRef<HTMLInputElement>(null);
   const expirationRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // @todo remove ts-ignores
+    // @ts-ignore
+    dispatch(
+      // @ts-ignore
+      addItemToPantry({
+        // @ts-ignore
+        name: nameRef?.current?.value,
+        // @ts-ignore
+        expiration: expirationRef?.current?.value,
+        pantryId,
+      })
+    );
+    console.log('submitted');
   };
 
   return (

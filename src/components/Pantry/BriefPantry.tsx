@@ -17,12 +17,12 @@ export const BriefPantry = ({ id, name, stats }: ShortPantry) => {
         </p>
         <p className='brief-pantry__stats-element'>expired: {stats.expired}</p>
       </div>
-      {/* <div className='Brief-pantry__actions'> */}
-      {/*  <ProductsList pantryId={id} /> */}
-      {/*  <AddProduct pantryId={id} /> */}
-      <UpdatePantry pantryId={id}></UpdatePantry>
-      <DeletePantry pantryId={id} />
-      {/* </div> */}
+      <div className='Brief-pantry__actions'>
+        <ProductsList pantryId={id} />
+        <AddProduct pantryId={id} />
+        <UpdatePantry pantryId={id}></UpdatePantry>
+        <DeletePantry pantryId={id} />
+      </div>
     </div>
   );
 };
