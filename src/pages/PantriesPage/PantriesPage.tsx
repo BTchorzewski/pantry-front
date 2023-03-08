@@ -1,13 +1,13 @@
 import { useEffect, useMemo } from 'react';
-import { BriefPantry } from '../components/Pantry/BriefPantry';
-import { CreatePantry } from '../components/CreatePantry/CreatePantry';
+import { BriefPantry } from '../../components/Pantry/BriefPantry';
+import { CreatePantry } from '../../components/CreatePantry/CreatePantry';
 import { useNavigate } from 'react-router-dom';
 import './PantriesPage.css';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchShortPantries,
   pantriesSelector,
-} from '../redux/pantriesSlice/pantriesSlice';
+} from '../../redux/pantriesSlice/pantriesSlice';
 export const PantriesPage = () => {
   const dispatch = useDispatch();
   const shortPantriesState = useSelector(pantriesSelector);

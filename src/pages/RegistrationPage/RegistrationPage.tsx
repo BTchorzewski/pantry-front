@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { basicRoute } from '../utils/fetch';
+import { basicRoute } from '../../utils/fetch';
 import { AxiosError } from 'axios';
-import { UserRegistrationReq, UserRegistrationRes } from '../types';
+import { UserRegistrationReq, UserRegistrationRes } from '../../types';
 
 export const RegistrationPage = () => {
   const [errorMsg, setErrorMsg] = useState<null | string>(null);

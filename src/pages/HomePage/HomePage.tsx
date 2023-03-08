@@ -1,6 +1,6 @@
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import { useSelector } from 'react-redux';
-import { authSelector } from '../redux/authSlice/authSlice';
+import { authSelector } from '../../redux/authSlice/authSlice';
 export const HomePage = () => {
   const {
     auth: { isAuth, user },

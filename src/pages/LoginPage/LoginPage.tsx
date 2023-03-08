@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import { JwtPayload, LoginReq, LoginRes } from '../types';
+import { JwtPayload, LoginReq, LoginRes } from '../../types';
 import { AxiosError, AxiosInstance } from 'axios';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { authSelector, login } from '../redux/authSlice/authSlice';
+import { authSelector, login } from '../../redux/authSlice/authSlice';
 
 export const LoginPage = () => {
   const dispatch = useDispatch();

@@ -1,5 +1,5 @@
 import { useRouteError } from 'react-router-dom';
-import { Navigation } from '../components/Navigation/Navigation';
+import { Navigation } from '../../components/Navigation/Navigation';
 
 interface ErrorType {
   status: number;
