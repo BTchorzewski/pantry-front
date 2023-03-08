@@ -6,6 +6,7 @@ import { HomePage } from '../pages/HomePage/HomePage';
 import { PantriesPage } from '../pages/PantriesPage/PantriesPage';
 import { LogoutPage } from '../pages/LogoutPage/LogoutPage';
 import { RegistrationPage } from '../pages/RegistrationPage/RegistrationPage';
+import { PantryPage } from '../pages/PantryPage/PantryPage';
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
       {
         path: '/registration',
         element: <RegistrationPage />,
+      },
+      {
+        path: '/pantry/:pantryId',
+        element: <PantryPage />,
       },
     ],
   },
