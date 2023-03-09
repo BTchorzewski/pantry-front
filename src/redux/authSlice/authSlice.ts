@@ -2,7 +2,11 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { protectedBasicRoute, basicRoute } from '../../utils/fetch';
 import { JwtPayload, LoginRes } from '../../types';
 import jwt from 'jwt-decode';
-import { clearToken, setToken } from '../../utils/token-session-storage';
+import {
+  clearToken,
+  getToken,
+  setToken,
+} from '../../utils/token-session-storage';
 
 export interface InitialState {
   status: 'idle' | 'loading' | 'finished' | 'error';
@@ -37,7 +41,19 @@ export const logout = createAsyncThunk(
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    refreshAuth: (state) => {
+      const token = getToken();
+      if (token !== undefined && typeof token === 'string') {
+        const decodedJwt: JwtPayload = jwt(token);
+        state.isAuth = true;
+        state.user = decodedJwt.login;
+      } else {
+        state.isAuth = false;
+        state.user = '';
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
@@ -76,6 +92,7 @@ const authSlice = createSlice({
 interface AuthSelector {
   auth: InitialState;
 }
+export const itemsActionRedux = authSlice.actions;
 
 export const authSelector = (state: AuthSelector) => state;
 
