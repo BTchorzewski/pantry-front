@@ -70,7 +70,7 @@ export const modifyItemInPantry = createAsyncThunk(
   'Items/modify',
   async ({ id, name, expiration }: IItem, thunkAPI) => {
     const axiosInstance = protectedBasicRoute();
-    const data: IItem = await axiosInstance.put(`/pantry/${id}`, {
+    const data: IItem = await axiosInstance.put(`/pantry/item/${id}`, {
       name,
       expiration,
     });

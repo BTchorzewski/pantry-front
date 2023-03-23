@@ -8,6 +8,7 @@ import {
   fetchItemsFromPantryById,
   removeItemFromPantry,
 } from '../../redux/itemSlice/itemsSlice';
+import { UpdateItemForm } from '../Forms/UpdateItemForm/UpdateItemForm';
 
 interface Props {
   pantryId: string;
@@ -63,13 +64,11 @@ export const ProductsList = ({ pantryId }: Props) => {
                     >
                       remove
                     </button>
-                    <button
-                      onClick={(event) => {
-                        removeItem(id);
-                      }}
-                    >
-                      modify
-                    </button>
+                    <UpdateItemForm
+                      name={name}
+                      expiration={expiration}
+                      itemId={id}
+                    />
                   </li>
                 );
               })}
