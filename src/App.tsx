@@ -5,6 +5,8 @@ import { Outlet } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getToken } from './utils/token-session-storage';
 import { itemsActionRedux } from './redux/authSlice/authSlice';
+import { CssBaseline } from '@mui/material';
+import ResponsiveAppBar from './components/AppBar/AppBar';
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -14,7 +16,8 @@ function App() {
 
   return (
     <div className='App'>
-      <Navigation />
+      <CssBaseline />
+      <ResponsiveAppBar />
       <main>
         <Outlet />
       </main>
