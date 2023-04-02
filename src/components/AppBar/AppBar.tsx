@@ -11,6 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import KitchenIcon from '@mui/icons-material/Kitchen';
 // import AdbIcon from '@mui/icons-material/Adb';
 import { Link, Grid } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
@@ -46,11 +47,12 @@ function ResponsiveAppBar() {
       <Grid
         container
         maxWidth='xl'
-        sx={{ padding: '20px' }}
         justifyContent={'space-between'}
+        padding={'10px'}
       >
-        <Grid item lg={4} sx={{ backgroundColor: 'green' }}>
-          <p>pierwszy element</p>
+        <Grid container lg={4} sx={{ backgroundColor: 'green' }}>
+          <KitchenIcon />
+          <p>heuahuehuae</p>
         </Grid>
         <Grid item lg={4} sx={{ backgroundColor: 'yellow' }}>
           <p>drugi element</p>
