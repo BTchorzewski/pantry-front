@@ -3,6 +3,7 @@ import { FormEvent, useRef } from 'react';
 import { AxiosError } from 'axios';
 import { useDispatch } from 'react-redux';
 import { addShortPantries } from '../../../redux/pantriesSlice/pantriesSlice';
+import { Button } from '@mui/material';
 
 export const CreatePantryForm = () => {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -30,7 +31,14 @@ export const CreatePantryForm = () => {
         Name:
         <input className='CreatePantry__input' type='text' ref={nameRef} />
       </label>
-      <button type={'submit'}>Create pantry</button>
+      <Button
+        variant={'contained'}
+        color={'primary'}
+        size={'medium'}
+        type={'submit'}
+      >
+        Create
+      </Button>
     </form>
   );
 };

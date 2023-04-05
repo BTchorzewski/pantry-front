@@ -3,6 +3,7 @@ import { AxiosError } from 'axios';
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { modifyNameShortPantries } from '../../../redux/pantriesSlice/pantriesSlice';
+import { Button } from '@mui/material';
 
 interface Props {
   pantryId: string;
@@ -34,9 +35,14 @@ export const ChangePantryNameForm = ({ pantryId, toggleShow }: Props) => {
         Change name:
         <input type='text' ref={nameRef} className='UpdatePantryForm__input' />
       </label>
-      <button type='submit' className='UpdatePantryForm__button'>
+      <Button
+        variant={'contained'}
+        color={'primary'}
+        size={'medium'}
+        type={'submit'}
+      >
         Update
-      </button>
+      </Button>
     </form>
   );
 };

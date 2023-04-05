@@ -5,6 +5,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { authSelector, login } from '../../redux/authSlice/authSlice';
+import { Button } from '@mui/material';
 
 export const LoginPage = () => {
   const dispatch = useDispatch();
@@ -48,9 +49,14 @@ export const LoginPage = () => {
             ref={passwordRef}
           />
         </label>
-        <button className='button' type={'submit'}>
+        <Button
+          variant={'contained'}
+          color={'primary'}
+          size={'medium'}
+          type={'submit'}
+        >
           Login
-        </button>
+        </Button>
       </form>
     </>
   );

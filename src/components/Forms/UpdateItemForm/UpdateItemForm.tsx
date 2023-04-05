@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { useRef } from 'react';
 import { modifyItemInPantry } from '../../../redux/itemSlice/itemsSlice';
+import { Button } from '@mui/material';
 
 interface Props {
   name: string;
@@ -37,7 +38,14 @@ export const UpdateItemForm = ({ expiration, name, itemId }: Props) => {
         new expiration date:
         <input type='date' ref={expirationRef} />
       </label>
-      <button type={'submit'}>update</button>
+      <Button
+        variant={'contained'}
+        color={'primary'}
+        size={'medium'}
+        type={'submit'}
+      >
+        Update
+      </Button>
     </form>
   );
 };

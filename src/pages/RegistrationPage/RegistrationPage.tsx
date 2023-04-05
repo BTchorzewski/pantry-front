@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { basicRoute } from '../../utils/fetch';
 import { AxiosError } from 'axios';
 import { UserRegistrationReq, UserRegistrationRes } from '../../types';
+import { Button } from '@mui/material';
 
 export const RegistrationPage = () => {
   const [errorMsg, setErrorMsg] = useState<null | string>(null);
@@ -61,13 +62,15 @@ export const RegistrationPage = () => {
             ref={passwordRef}
           />
         </label>
-        <button
-          className='RegistrationPage__button'
-          onClick={onSubmit}
-          type='submit'
+        <Button
+          variant={'contained'}
+          color={'primary'}
+          size={'medium'}
+          type={'submit'}
+          onSubmit={onSubmit}
         >
           Register
-        </button>
+        </Button>
       </form>
     </>
   );

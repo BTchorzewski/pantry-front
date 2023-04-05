@@ -17,7 +17,7 @@ function App() {
   return (
     <div className='App'>
       <CssBaseline />
-      <ResponsiveAppBar />
+      <Navigation />
       <main>
         <Outlet />
       </main>

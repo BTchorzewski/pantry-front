@@ -2,6 +2,7 @@ import './CreateProductForm.css';
 import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { addItemToPantry } from '../../../redux/itemSlice/itemsSlice';
+import { Button } from '@mui/material';
 
 interface Props {
   pantryId: string;
@@ -39,7 +40,14 @@ export const CreateProductForm = ({ pantryId, hideForm }: Props) => {
         expiration:
         <input type='date' ref={expirationRef} />
       </label>
-      <button type={'submit'}>Add product to the pantry.</button>
+      <Button
+        variant={'contained'}
+        color={'primary'}
+        size={'medium'}
+        type={'submit'}
+      >
+        Create
+      </Button>
     </form>
   );
 };
