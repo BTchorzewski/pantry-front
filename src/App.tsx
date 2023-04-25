@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { getToken } from './utils/token-session-storage';
 import { itemsActionRedux } from './redux/authSlice/authSlice';
-import { CssBaseline } from '@mui/material';
+import { Box, Container, CssBaseline, Grid } from '@mui/material';
 import ResponsiveAppBar from './components/AppBar/AppBar';
 function App() {
   const dispatch = useDispatch();
@@ -15,13 +15,13 @@ function App() {
   }, []);
 
   return (
-    <div className='App'>
+    <Box className='App'>
       <CssBaseline />
       <Navigation />
-      <main>
+      <Grid container justifyContent='center' component='main'>
         <Outlet />
-      </main>
-    </div>
+      </Grid>
+    </Box>
   );
 }
 
