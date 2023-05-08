@@ -58,7 +58,7 @@ export const LoginPage = () => {
             flexDirection: 'column',
             margin: '3rem 0',
             '> *': {
-              marginTop: 3,
+              marginTop: '1.6rem',
             },
             md: {
               width: '100%',
